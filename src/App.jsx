@@ -1,14 +1,8 @@
 import { useCallback, useState } from 'react';
-import { useLocalStorage } from './hooks/useLocalStorage.js';
 import { usePokerStats } from './hooks/usePokerStats.js';
-import { makeSampleSessions } from './utils/sampleData.js';
-import {
-  STORAGE_KEY,
-  TABS,
-  DEFAULT_SETTINGS,
-  DEFAULT_BANKROLL,
-  CURRENCIES,
-} from './constants.js';
+import { useAuth } from './hooks/useAuth.js';
+import { useStore } from './hooks/useStore.js';
+import { TABS, CURRENCIES } from './constants.js';
 import { formatMoney } from './utils/formatting.js';
 
 import LogSession from './components/tabs/LogSession.jsx';
@@ -17,86 +11,56 @@ import Charts from './components/tabs/Charts.jsx';
 import Calculators from './components/tabs/Calculators.jsx';
 import SessionHistory from './components/tabs/SessionHistory.jsx';
 import Toast from './components/ui/Toast.jsx';
-
-function initialState() {
-  return {
-    sessions: makeSampleSessions(),
-    bankroll: { ...DEFAULT_BANKROLL, current: 5000 },
-    settings: { ...DEFAULT_SETTINGS },
-    isSample: true,
-  };
-}
+import AccountMenu from './components/ui/AccountMenu.jsx';
 
 export default function App() {
-  const [state, setState] = useLocalStorage(STORAGE_KEY, initialState);
   const [tab, setTab] = useState('log');
   const [toast, setToast] = useState(null);
   const [showBankroll, setShowBankroll] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-
-  const { sessions, bankroll, settings, isSample } = state;
-  const currency = settings.currency || '$';
-
-  const stats = usePokerStats(sessions, bankroll, settings);
+  const [migrateDismissed, setMigrateDismissed] = useState(false);
 
   const showToast = useCallback((t) => setToast({ ...t, key: Date.now() }), []);
 
-  // Adding the first real session clears the sample dataset.
-  const addSession = useCallback(
-    (session) => {
-      setState((prev) => {
-        if (prev.isSample) {
-          return { ...prev, sessions: [session], isSample: false };
-        }
-        return { ...prev, sessions: [...prev.sessions, session] };
-      });
-    },
-    [setState]
-  );
+  const { user, ready, signInWithGoogle, signOut, configured } = useAuth();
 
-  // Update existing (isNew=false) or append (isNew=true, used by CSV import).
-  const updateSession = useCallback(
-    (session, isNew = false) => {
-      setState((prev) => {
-        const wasSample = prev.isSample;
-        const base = wasSample ? [] : prev.sessions;
-        let next;
-        if (isNew) {
-          next = [...base, session];
-        } else {
-          next = base.map((s) => (s.id === session.id ? session : s));
-        }
-        return { ...prev, sessions: next, isSample: false };
-      });
-    },
-    [setState]
-  );
+  const store = useStore(user, {
+    onError: (msg) => showToast({ tone: 'loss', icon: '⚠️', title: 'Sync error', message: msg }),
+  });
+  const {
+    sessions,
+    bankroll,
+    settings,
+    isSample,
+    mode,
+    loading,
+    localSessionCount,
+    addSession,
+    updateSession,
+    deleteSession,
+    setBankrollCurrent,
+    updateSettings,
+    loadSamples,
+    uploadLocalSessions,
+  } = store;
 
-  const deleteSession = useCallback(
-    (id) => {
-      setState((prev) => ({
-        ...prev,
-        sessions: prev.sessions.filter((s) => s.id !== id),
-        isSample: false,
-      }));
-    },
-    [setState]
-  );
+  const currency = settings.currency || '$';
+  const stats = usePokerStats(sessions, bankroll, settings);
 
-  const setBankrollCurrent = useCallback(
-    (val) => setState((prev) => ({ ...prev, bankroll: { ...prev.bankroll, current: val } })),
-    [setState]
-  );
-
-  const updateSettings = useCallback(
-    (patch) => setState((prev) => ({ ...prev, settings: { ...prev.settings, ...patch } })),
-    [setState]
-  );
-
-  const loadSamples = useCallback(() => {
-    setState(initialState());
+  const handleLoadSamples = useCallback(() => {
+    loadSamples();
     showToast({ icon: '🃏', title: 'Sample data loaded' });
-  }, [setState, showToast]);
+  }, [loadSamples, showToast]);
+
+  // Offer to upload guest sessions when a fresh cloud account is empty.
+  const showMigrate =
+    mode === 'cloud' && !loading && !migrateDismissed && localSessionCount > 0 && sessions.length === 0;
+
+  const handleMigrate = useCallback(async () => {
+    const count = await uploadLocalSessions();
+    setMigrateDismissed(true);
+    if (count > 0) showToast({ tone: 'win', icon: '☁️', title: `Uploaded ${count} sessions to your account` });
+  }, [uploadLocalSessions, showToast]);
 
   const tabProps = {
     log: <LogSession onAdd={addSession} venues={stats.venues} currency={currency} showToast={showToast} />,
@@ -115,6 +79,19 @@ export default function App() {
   };
 
   const activeTab = TABS.find((t) => t.id === tab);
+
+  // Wait for the auth session to resolve before rendering, so we don't flash
+  // guest data to a user who's actually signed in.
+  if (configured && !ready) {
+    return (
+      <div className="flex min-h-full items-center justify-center bg-ink-900 text-white/50">
+        <div className="flex flex-col items-center gap-3">
+          <span className="text-3xl">♠️</span>
+          <div className="text-sm">Loading…</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-full bg-gradient-to-b from-ink-900 to-[#0a120e] text-white">
@@ -139,6 +116,12 @@ export default function App() {
                 {formatMoney(stats.currentBankroll, currency)}
               </div>
             </button>
+            <AccountMenu
+              configured={configured}
+              user={user}
+              onSignIn={signInWithGoogle}
+              onSignOut={signOut}
+            />
             <button
               onClick={() => setShowSettings(true)}
               className="rounded-lg border border-white/10 bg-ink-850 p-2 text-white/60 transition hover:text-white"
@@ -148,6 +131,13 @@ export default function App() {
             </button>
           </div>
         </div>
+
+        {/* Cloud sync progress */}
+        {mode === 'cloud' && loading && (
+          <div className="h-0.5 w-full overflow-hidden bg-felt-600/30">
+            <div className="skeleton h-full w-1/2" />
+          </div>
+        )}
 
         {/* Desktop tab bar */}
         <nav className="mx-auto hidden max-w-4xl gap-1 px-4 pb-2 sm:flex">
@@ -171,6 +161,33 @@ export default function App() {
           <div className="flex items-center gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
             <span>🧪</span>
             <span>Showing sample data — log your first session to start tracking your own.</span>
+          </div>
+        </div>
+      )}
+
+      {/* Migrate guest data into a fresh cloud account */}
+      {showMigrate && (
+        <div className="mx-auto max-w-4xl px-4 pt-3">
+          <div className="flex flex-wrap items-center gap-2 rounded-lg border border-felt-500/40 bg-felt-600/20 px-3 py-2 text-xs text-felt-50">
+            <span>☁️</span>
+            <span>
+              You have {localSessionCount} session{localSessionCount === 1 ? '' : 's'} stored locally. Upload them to
+              your account so they sync across devices?
+            </span>
+            <div className="ml-auto flex gap-2">
+              <button
+                onClick={handleMigrate}
+                className="rounded-md bg-felt-500 px-3 py-1 font-medium text-white transition hover:bg-felt-400"
+              >
+                Upload
+              </button>
+              <button
+                onClick={() => setMigrateDismissed(true)}
+                className="rounded-md px-3 py-1 font-medium text-white/60 transition hover:text-white"
+              >
+                Not now
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -213,7 +230,8 @@ export default function App() {
           settings={settings}
           onUpdate={updateSettings}
           onClose={() => setShowSettings(false)}
-          onLoadSamples={loadSamples}
+          onLoadSamples={handleLoadSamples}
+          mode={mode}
         />
       )}
     </div>
@@ -282,10 +300,23 @@ function BankrollModal({ bankroll, stats, currency, onSetCurrent, onClose }) {
   );
 }
 
-function SettingsModal({ settings, onUpdate, onClose, onLoadSamples }) {
+function SettingsModal({ settings, onUpdate, onClose, onLoadSamples, mode }) {
   return (
     <Modal title="Settings" onClose={onClose}>
       <div className="space-y-4">
+        <div className="flex items-center gap-2 rounded-lg bg-ink-900 px-3 py-2 text-xs">
+          {mode === 'cloud' ? (
+            <>
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              <span className="text-white/70">Synced to your cloud account</span>
+            </>
+          ) : (
+            <>
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+              <span className="text-white/70">Local mode — data stays in this browser. Sign in to sync.</span>
+            </>
+          )}
+        </div>
         <div>
           <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-white/50">Currency</span>
           <div className="flex gap-1 rounded-lg bg-ink-900 p-1">
@@ -340,12 +371,14 @@ function SettingsModal({ settings, onUpdate, onClose, onLoadSamples }) {
           />
         </label>
 
-        <button
-          onClick={onLoadSamples}
-          className="w-full rounded-lg border border-white/10 bg-ink-900 px-4 py-2 text-sm font-medium text-white/70 transition hover:text-white"
-        >
-          🃏 Reload sample data
-        </button>
+        {mode !== 'cloud' && (
+          <button
+            onClick={onLoadSamples}
+            className="w-full rounded-lg border border-white/10 bg-ink-900 px-4 py-2 text-sm font-medium text-white/70 transition hover:text-white"
+          >
+            🃏 Reload sample data
+          </button>
+        )}
       </div>
     </Modal>
   );
