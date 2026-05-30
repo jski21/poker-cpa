@@ -24,9 +24,21 @@ your numbers follow you across devices. See [`SUPABASE_SETUP.md`](./SUPABASE_SET
 - **📝 Session History** — sortable, filterable table with inline edit/delete,
   expandable notes, and **CSV import/export**.
 
+## Install as an app (PWA)
+
+Felt Ledger is an installable Progressive Web App with offline support.
+
+- **iPhone/iPad (Safari):** open the site → Share → **Add to Home Screen**. It
+  launches fullscreen with its own icon, no browser chrome.
+- **Android/Desktop (Chrome/Edge):** use the **Install** prompt in the address bar.
+
+A service worker precaches the app shell so it opens instantly and works offline
+(your data is local anyway, or syncs when back online if signed in). Icons are
+generated from `public/icon.svg` via `node scripts/gen-icons.mjs` (needs `sharp`).
+
 ## Tech
 
-- React 18 (hooks) · Tailwind CSS · Recharts · Vite
+- React 18 (hooks) · Tailwind CSS · Recharts · Vite · vite-plugin-pwa
 - `localStorage` persistence · 15 pre-loaded sample sessions on first run
 
 ## Getting started

@@ -96,7 +96,7 @@ export default function App() {
   return (
     <div className="min-h-full bg-gradient-to-b from-ink-900 to-[#0a120e] text-white">
       {/* Header */}
-      <header className="sticky top-0 z-20 border-b border-white/10 bg-ink-900/85 backdrop-blur">
+      <header className="sticky top-0 z-20 border-b border-white/10 bg-ink-900/85 pt-[env(safe-area-inset-top)] backdrop-blur">
         <div className="mx-auto flex max-w-4xl items-center gap-3 px-4 py-3">
           <div className="flex items-center gap-2">
             <span className="text-xl">♠️</span>
@@ -196,7 +196,7 @@ export default function App() {
       <main className="mx-auto max-w-4xl px-4 py-4 pb-24 sm:pb-8">{tabProps[tab]}</main>
 
       {/* Mobile bottom tab bar */}
-      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-ink-900/95 backdrop-blur sm:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-white/10 bg-ink-900/95 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden">
         <div className="mx-auto flex max-w-4xl">
           {TABS.map((t) => (
             <button
