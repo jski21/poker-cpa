@@ -1,9 +1,9 @@
 {
-  "name": "poker-cpa",
+  "name": "felt-ledger",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Poker Accountant — log sessions and track every metric for your game, bankroll, and stakes.",
+  "description": "Felt Ledger — log poker sessions and track every metric for your game, bankroll, and stakes.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

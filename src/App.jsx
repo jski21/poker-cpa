@@ -101,7 +101,7 @@ export default function App() {
           <div className="flex items-center gap-2">
             <span className="text-xl">♠️</span>
             <div>
-              <h1 className="text-base font-bold leading-none tracking-tight">Poker Accountant</h1>
+              <h1 className="text-base font-bold leading-none tracking-tight">Felt Ledger</h1>
               <p className="text-[11px] text-white/40">{activeTab?.full}</p>
             </div>
           </div>

@@ -1,9 +1,10 @@
-# ♠️ Poker Accountant (poker-cpa)
+# ♠️ Felt Ledger
 
 A full-featured, single-page **poker financials dashboard**. Log sessions and
 instantly see every metric you need to make informed decisions about your game,
-bankroll, and stakes. All data persists in `localStorage` — no backend, no
-account, your numbers stay on your device.
+bankroll, and stakes. Works offline out of the box (data persists in
+`localStorage`), with **optional Google sign-in + cloud sync** via Supabase so
+your numbers follow you across devices. See [`SUPABASE_SETUP.md`](./SUPABASE_SETUP.md).
 
 ## Features
 
