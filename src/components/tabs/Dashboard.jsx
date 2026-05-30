@@ -3,14 +3,33 @@ import MetricCard from '../ui/MetricCard.jsx';
 import StatTable from '../ui/StatTable.jsx';
 import EmptyState from '../ui/EmptyState.jsx';
 import Tooltip from '../ui/Tooltip.jsx';
+import Icon from '../ui/Icon.jsx';
 import { formatMoney, formatNumber, formatPercent, pnlColor } from '../../utils/formatting.js';
 
 function SectionTitle({ children, hint }) {
   return (
-    <h2 className="mb-2 mt-1 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-600">
+    <h2 className="mb-2.5 flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-500">
       {children}
-      {hint && <span className="text-[11px] font-normal normal-case text-slate-400">{hint}</span>}
+      {hint && <span className="text-[11px] font-normal normal-case tracking-normal text-slate-400">{hint}</span>}
     </h2>
+  );
+}
+
+// A stat shown inside the green bankroll hero (light text on dark felt).
+function HeroStat({ label, value, positive, arrow }) {
+  return (
+    <div className="rounded-xl bg-white/10 px-3 py-2">
+      <div className="text-[10px] font-semibold uppercase tracking-wide text-felt-100/70">{label}</div>
+      <div className="mt-1 flex items-center gap-1 text-[15px] font-semibold tabular-nums">
+        {arrow && (
+          <Icon
+            name={positive ? 'trendUp' : 'trendDown'}
+            className={`h-3.5 w-3.5 ${positive ? 'text-emerald-200' : 'text-rose-200'}`}
+          />
+        )}
+        <span>{value}</span>
+      </div>
+    </div>
   );
 }
 
@@ -56,39 +75,43 @@ export default function Dashboard({ stats, currency, onSetBankroll }) {
 
   return (
     <div className="space-y-6 pb-8">
-      {/* A. Bankroll Overview */}
+      {/* A. Bankroll hero */}
       <section>
-        <SectionTitle>Bankroll Overview</SectionTitle>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          <button onClick={onSetBankroll} className="text-left">
-            <MetricCard
-              label="Current Bankroll"
-              tooltip="Starting bankroll + net profit + deposits − withdrawals. Tap to set your starting figure."
-              value={formatMoney(s.currentBankroll, c)}
-              valueClass={s.currentBankroll >= 0 ? 'text-slate-900' : 'text-rose-600'}
-              sub="tap to edit start"
-              accent
-            />
-          </button>
-          <MetricCard
-            label="Total P&L"
-            tooltip="All-time profit/loss across every logged session."
-            value={formatMoney(s.totalProfit, c, { sign: true })}
-            valueClass={pnlColor(s.totalProfit)}
-          />
-          <MetricCard
-            label="Last 30 Days"
-            tooltip="Net result of sessions in the last 30 days."
-            value={formatMoney(s.last30Profit, c, { sign: true })}
-            valueClass={pnlColor(s.last30Profit)}
-          />
-          <MetricCard
-            label="All-Time ROI"
-            tooltip="(Total profit ÷ total buy-ins) × 100."
-            value={formatPercent(s.roi)}
-            valueClass={pnlColor(s.roi, 0)}
-          />
-        </div>
+        <button onClick={onSetBankroll} className="block w-full text-left">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-felt-500 to-felt-700 p-5 text-white shadow-hero">
+            <div className="pointer-events-none absolute -right-7 -top-10 opacity-[0.08]">
+              <Icon name="spade" className="h-44 w-44" strokeWidth={1} />
+            </div>
+            <div className="relative">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-felt-100/80">
+                  <Icon name="wallet" className="h-4 w-4" /> Current Bankroll
+                </div>
+                <span className="rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-medium text-felt-50">
+                  {formatNumber(s.bankrollInBuyins, 1)} buy-ins
+                </span>
+              </div>
+              <div className="mt-2 text-[2.5rem] font-bold leading-none tracking-tight tabular-nums">
+                {formatMoney(s.currentBankroll, c)}
+              </div>
+              <div className="mt-5 grid grid-cols-3 gap-2.5">
+                <HeroStat
+                  label="All-Time P&L"
+                  value={formatMoney(s.totalProfit, c, { sign: true })}
+                  positive={s.totalProfit >= 0}
+                  arrow
+                />
+                <HeroStat
+                  label="Last 30 Days"
+                  value={formatMoney(s.last30Profit, c, { sign: true })}
+                  positive={s.last30Profit >= 0}
+                  arrow
+                />
+                <HeroStat label="ROI" value={formatPercent(s.roi)} positive={s.roi >= 0} arrow />
+              </div>
+            </div>
+          </div>
+        </button>
       </section>
 
       {/* B. Win Rate Metrics */}
@@ -159,9 +182,12 @@ export default function Dashboard({ stats, currency, onSetBankroll }) {
         <SectionTitle hint={`σ in ${s.sdUnit}`}>Variance &amp; Risk</SectionTitle>
 
         {s.ror > 10 && (
-          <div className="mb-2 rounded-xl border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-            ⚠️ <span className="font-semibold">Under-rolled.</span> Your current bankroll may be too thin for these
-            stakes (Risk of Ruin {formatPercent(s.ror)}). Consider dropping down or rebuilding.
+          <div className="mb-2 flex items-start gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            <Icon name="alert" className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>
+              <span className="font-semibold">Under-rolled.</span> Your current bankroll may be too thin for these
+              stakes (Risk of Ruin {formatPercent(s.ror)}). Consider dropping down or rebuilding.
+            </span>
           </div>
         )}
 
@@ -175,24 +201,24 @@ export default function Dashboard({ stats, currency, onSetBankroll }) {
             label="Hourly Range 68%"
             tooltip="Where ~2 of every 3 hours should land: hourly ± 1 standard deviation."
             value={range(s.range68[0], s.range68[1])}
-            valueClass="text-slate-800 text-base"
+            valueClass="!text-sm font-semibold text-slate-700"
           />
           <MetricCard
             label="Hourly Range 95%"
             tooltip="Where ~19 of every 20 hours should land: hourly ± 2 standard deviations."
             value={range(s.range95[0], s.range95[1])}
-            valueClass="text-slate-800 text-base"
+            valueClass="!text-sm font-semibold text-slate-700"
           />
-          <div className={`rounded-xl border px-3 py-2.5 ${ror.bg}`}>
-            <div className="mb-1 text-[11px] font-medium uppercase tracking-wide text-slate-400">
+          <div className={`rounded-2xl border px-3.5 py-3 shadow-card ${ror.bg}`}>
+            <div className="mb-1.5 text-[10.5px] font-semibold uppercase tracking-[0.06em] text-slate-400">
               <Tooltip text="Probability of losing your whole bankroll at these stakes, given your win rate and variance.">
                 Risk of Ruin
               </Tooltip>
             </div>
-            <div className={`font-mono text-lg font-semibold tabular-nums ${ror.text}`}>
+            <div className={`text-[1.35rem] font-semibold leading-none tracking-tight tabular-nums ${ror.text}`}>
               {formatPercent(s.ror)}
             </div>
-            <div className={`mt-0.5 text-[11px] ${ror.text}`}>{ror.label}</div>
+            <div className={`mt-1.5 text-[11px] font-medium ${ror.text}`}>{ror.label}</div>
           </div>
           <MetricCard
             label="Recommended Roll"
@@ -248,7 +274,7 @@ export default function Dashboard({ stats, currency, onSetBankroll }) {
             </button>
           ))}
         </div>
-        <div className="rounded-xl border border-slate-200 bg-white p-3">{breakdownContent}</div>
+        <div className="rounded-xl bg-white ring-1 ring-slate-200/70 shadow-card p-3">{breakdownContent}</div>
       </section>
     </div>
   );

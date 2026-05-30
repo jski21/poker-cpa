@@ -29,7 +29,7 @@ export default function AccountMenu({ configured, user, onSignIn, onSignOut }) {
   if (!configured) {
     return (
       <span
-        className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-medium text-slate-400"
+        className="rounded-lg bg-white ring-1 ring-slate-200/70 shadow-card px-2.5 py-1.5 text-[11px] font-medium text-slate-400"
         title="Cloud sync isn't configured. Data is stored locally in this browser."
       >
         Local
@@ -41,7 +41,7 @@ export default function AccountMenu({ configured, user, onSignIn, onSignOut }) {
     return (
       <button
         onClick={onSignIn}
-        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:border-felt-300 hover:text-slate-900"
+        className="flex items-center gap-2 rounded-lg bg-white ring-1 ring-slate-200/70 shadow-card px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:border-felt-300 hover:text-slate-900"
       >
         <GoogleIcon /> Sign in
       </button>
@@ -56,7 +56,7 @@ export default function AccountMenu({ configured, user, onSignIn, onSignOut }) {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-2 py-1.5 transition hover:border-felt-300"
+        className="flex items-center gap-2 rounded-lg bg-white ring-1 ring-slate-200/70 shadow-card px-2 py-1.5 transition hover:border-felt-300"
         title={email}
       >
         {avatar ? (
@@ -70,7 +70,7 @@ export default function AccountMenu({ configured, user, onSignIn, onSignOut }) {
         <span className="text-slate-400">▾</span>
       </button>
       {open && (
-        <div className="absolute right-0 z-30 mt-1 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl shadow-slate-400/30">
+        <div className="absolute right-0 z-30 mt-1 w-56 overflow-hidden rounded-xl bg-white ring-1 ring-slate-200/70 shadow-card shadow-2xl shadow-slate-400/30">
           <div className="border-b border-slate-200 px-3 py-2.5">
             <div className="text-[11px] uppercase tracking-wide text-slate-400">Signed in</div>
             <div className="truncate text-sm text-slate-800">{email}</div>

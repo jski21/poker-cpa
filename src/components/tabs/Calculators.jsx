@@ -45,7 +45,7 @@ function NumField({ label, value, onChange, step = 'any', suffix, hint }) {
 
 function Card({ title, icon, children }) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-4">
+    <section className="rounded-2xl bg-white ring-1 ring-slate-200/70 shadow-card p-4">
       <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-800">
         <span>{icon}</span> {title}
       </h2>

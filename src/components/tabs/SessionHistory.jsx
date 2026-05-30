@@ -179,7 +179,7 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
         <div className="ml-auto flex gap-2">
           <button
             onClick={() => fileRef.current?.click()}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:text-slate-900"
+            className="rounded-lg bg-white ring-1 ring-slate-200/70 shadow-card px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:text-slate-900"
           >
             ⬆ Import CSV
           </button>
@@ -194,7 +194,7 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
       </div>
 
       {/* Filters */}
-      <div className="grid grid-cols-2 gap-2 rounded-xl border border-slate-200 bg-white p-3 sm:grid-cols-4 lg:grid-cols-7">
+      <div className="grid grid-cols-2 gap-2 rounded-xl bg-white ring-1 ring-slate-200/70 shadow-card p-3 sm:grid-cols-4 lg:grid-cols-7">
         <input type="date" value={filters.from} onChange={(e) => setF('from', e.target.value)} className={inputClass} title="From date" />
         <input type="date" value={filters.to} onChange={(e) => setF('to', e.target.value)} className={inputClass} title="To date" />
         <select value={filters.game} onChange={(e) => setF('game', e.target.value)} className={inputClass}>

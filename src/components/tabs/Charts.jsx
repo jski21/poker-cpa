@@ -23,7 +23,7 @@ import { formatMoney, formatDateShort } from '../../utils/formatting.js';
 
 function ChartCard({ title, subtitle, children, loading }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-3 sm:p-4">
+    <div className="rounded-2xl bg-white ring-1 ring-slate-200/70 shadow-card p-3 sm:p-4">
       <div className="mb-3">
         <h3 className="text-sm font-semibold text-slate-800">{title}</h3>
         {subtitle && <p className="text-xs text-slate-400">{subtitle}</p>}
