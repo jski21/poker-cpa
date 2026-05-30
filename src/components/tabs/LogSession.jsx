@@ -199,7 +199,7 @@ export default function LogSession({ onAdd, venues, currency, showToast }) {
           <input
             type="number"
             inputMode="decimal"
-            step="0.5"
+            step="any"
             value={form.bigBlind}
             onChange={(e) => set('bigBlind', e.target.value)}
             placeholder="5"
