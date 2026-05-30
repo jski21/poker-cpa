@@ -5,7 +5,7 @@ import { formatMoney, formatDate, pnlColor } from '../../utils/formatting.js';
 import { GAME_TYPES, FORMATS, TAG_OPTIONS } from '../../constants.js';
 
 const inputClass =
-  'rounded-lg border border-white/10 bg-ink-900 px-2.5 py-1.5 text-sm text-white placeholder-white/30 outline-none focus:border-felt-400';
+  'rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-1.5 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-felt-400';
 
 function toCSV(sessions) {
   const headers = [
@@ -173,13 +173,13 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
     <div className="space-y-3 pb-8">
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-2">
-        <div className="text-sm text-white/60">
+        <div className="text-sm text-slate-500">
           {filtered.length} of {sessions.length} sessions
         </div>
         <div className="ml-auto flex gap-2">
           <button
             onClick={() => fileRef.current?.click()}
-            className="rounded-lg border border-white/10 bg-ink-850 px-3 py-1.5 text-xs font-medium text-white/70 transition hover:text-white"
+            className="rounded-lg bg-white ring-1 ring-slate-200/70 shadow-card px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:text-slate-900"
           >
             ⬆ Import CSV
           </button>
@@ -194,7 +194,7 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
       </div>
 
       {/* Filters */}
-      <div className="grid grid-cols-2 gap-2 rounded-xl border border-white/10 bg-ink-850 p-3 sm:grid-cols-4 lg:grid-cols-7">
+      <div className="grid grid-cols-2 gap-2 rounded-xl bg-white ring-1 ring-slate-200/70 shadow-card p-3 sm:grid-cols-4 lg:grid-cols-7">
         <input type="date" value={filters.from} onChange={(e) => setF('from', e.target.value)} className={inputClass} title="From date" />
         <input type="date" value={filters.to} onChange={(e) => setF('to', e.target.value)} className={inputClass} title="To date" />
         <select value={filters.game} onChange={(e) => setF('game', e.target.value)} className={inputClass}>
@@ -224,7 +224,7 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
 
       {/* Sort row */}
       <div className="flex gap-1 text-xs">
-        <span className="px-1 py-1.5 text-white/40">Sort:</span>
+        <span className="px-1 py-1.5 text-slate-400">Sort:</span>
         {[
           ['date', 'Newest'],
           ['profit', 'Profit'],
@@ -235,7 +235,7 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
             key={k}
             onClick={() => setSortKey(k)}
             className={`rounded-md px-2.5 py-1.5 font-medium transition ${
-              sortKey === k ? 'bg-felt-500 text-white' : 'bg-ink-850 text-white/55 hover:text-white'
+              sortKey === k ? 'bg-felt-500 text-white' : 'bg-white text-slate-500 hover:text-slate-900'
             }`}
           >
             {label}
@@ -244,9 +244,9 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-white/10">
+      <div className="overflow-hidden rounded-xl border border-slate-200">
         <table className="w-full text-sm">
-          <thead className="bg-ink-850 text-[11px] uppercase tracking-wide text-white/40">
+          <thead className="bg-white text-[11px] uppercase tracking-wide text-slate-400">
             <tr>
               <th className="py-2 pl-3 pr-2 text-left font-medium">Date</th>
               <th className="px-2 py-2 text-left font-medium">Where</th>
@@ -266,16 +266,16 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
               return (
                 <FragmentRow key={s.id}>
                   <tr
-                    className="cursor-pointer border-t border-white/5 transition hover:bg-white/[0.03]"
+                    className="cursor-pointer border-t border-slate-100 transition hover:bg-slate-50"
                     onClick={() => setExpanded(isOpen ? null : s.id)}
                   >
-                    <td className="py-2.5 pl-3 pr-2 text-white/80">{formatDate(s.date)}</td>
+                    <td className="py-2.5 pl-3 pr-2 text-slate-700">{formatDate(s.date)}</td>
                     <td className="px-2 py-2.5">
-                      <div className="text-white/85">{s.location}</div>
-                      <div className="text-[11px] text-white/40 sm:hidden">{s.stakes} · {s.gameType}</div>
+                      <div className="text-slate-800">{s.location}</div>
+                      <div className="text-[11px] text-slate-400 sm:hidden">{s.stakes} · {s.gameType}</div>
                     </td>
-                    <td className="hidden px-2 py-2.5 text-white/60 sm:table-cell">{s.stakes || '—'}</td>
-                    <td className="hidden px-2 py-2.5 text-right font-mono tabular-nums text-white/60 sm:table-cell">
+                    <td className="hidden px-2 py-2.5 text-slate-500 sm:table-cell">{s.stakes || '—'}</td>
+                    <td className="hidden px-2 py-2.5 text-right font-mono tabular-nums text-slate-500 sm:table-cell">
                       {s.hoursPlayed || '—'}
                     </td>
                     <td className={`px-2 py-2.5 text-right font-mono font-semibold tabular-nums ${pnlColor(pnl)}`}>
@@ -284,11 +284,11 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
                     <td className={`px-2 py-2.5 text-right font-mono tabular-nums ${pnlColor(hourly)}`}>
                       {s.hoursPlayed ? formatMoney(hourly, c, { sign: true }) : '—'}
                     </td>
-                    <td className="py-2.5 pl-2 pr-3 text-right text-white/30">{isOpen ? '▴' : '▾'}</td>
+                    <td className="py-2.5 pl-2 pr-3 text-right text-slate-300">{isOpen ? '▴' : '▾'}</td>
                   </tr>
 
                   {isOpen && (
-                    <tr className="border-t border-white/5 bg-ink-900/50">
+                    <tr className="border-t border-slate-100 bg-slate-100/60">
                       <td colSpan={7} className="px-3 py-3">
                         {isEditing ? (
                           <EditPanel
@@ -299,7 +299,7 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
                           />
                         ) : (
                           <div className="space-y-2">
-                            <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-white/55">
+                            <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-slate-500">
                               <span>{s.gameType} · {s.format}</span>
                               <span>Buy-in {formatMoney(s.buyIn, c)}</span>
                               <span>Cash-out {formatMoney(s.cashOut, c)}</span>
@@ -309,17 +309,17 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
                             {s.tags?.length > 0 && (
                               <div className="flex flex-wrap gap-1">
                                 {s.tags.map((t) => (
-                                  <span key={t} className="rounded-full bg-felt-600/40 px-2 py-0.5 text-[11px] text-felt-50">
+                                  <span key={t} className="rounded-full bg-felt-100 px-2 py-0.5 text-[11px] text-felt-700">
                                     {t}
                                   </span>
                                 ))}
                               </div>
                             )}
-                            {s.notes && <p className="text-sm text-white/70">{s.notes}</p>}
+                            {s.notes && <p className="text-sm text-slate-600">{s.notes}</p>}
                             <div className="flex gap-2 pt-1">
                               <button
                                 onClick={(e) => { e.stopPropagation(); startEdit(s); }}
-                                className="rounded-md bg-ink-850 px-3 py-1.5 text-xs font-medium text-white/70 transition hover:text-white"
+                                className="rounded-md bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:text-slate-900"
                               >
                                 ✏️ Edit
                               </button>
@@ -331,7 +331,7 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
                                     showToast({ icon: '🗑️', title: 'Session deleted' });
                                   }
                                 }}
-                                className="rounded-md bg-rose-600/20 px-3 py-1.5 text-xs font-medium text-rose-300 transition hover:bg-rose-600/30"
+                                className="rounded-md bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-600 transition hover:bg-rose-100"
                               >
                                 🗑️ Delete
                               </button>
@@ -347,7 +347,7 @@ export default function SessionHistory({ sessions, onUpdate, onDelete, currency,
           </tbody>
         </table>
         {filtered.length === 0 && (
-          <div className="bg-ink-850 py-8 text-center text-sm text-white/40">No sessions match these filters.</div>
+          <div className="bg-white py-8 text-center text-sm text-slate-400">No sessions match these filters.</div>
         )}
       </div>
     </div>
@@ -384,7 +384,7 @@ function EditPanel({ form, setForm, onSave, onCancel }) {
             type="button"
             onClick={() => toggleTag(t)}
             className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium transition ${
-              form.tags.includes(t) ? 'bg-felt-500 text-white' : 'bg-ink-850 text-white/50'
+              form.tags.includes(t) ? 'bg-felt-500 text-white' : 'bg-white text-slate-500'
             }`}
           >
             {t}
@@ -402,7 +402,7 @@ function EditPanel({ form, setForm, onSave, onCancel }) {
         <button onClick={onSave} className="rounded-md bg-felt-500 px-4 py-1.5 text-xs font-semibold text-white hover:bg-felt-400">
           Save
         </button>
-        <button onClick={onCancel} className="rounded-md bg-ink-850 px-4 py-1.5 text-xs font-medium text-white/60 hover:text-white">
+        <button onClick={onCancel} className="rounded-md bg-white px-4 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-900">
           Cancel
         </button>
       </div>

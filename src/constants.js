@@ -78,9 +78,9 @@ export const DEFAULT_BANKROLL = {
 export const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export const TABS = [
-  { id: 'log', label: 'Log', icon: '📋', full: 'Log Session' },
-  { id: 'dashboard', label: 'Stats', icon: '📊', full: 'Dashboard' },
-  { id: 'charts', label: 'Charts', icon: '📈', full: 'Charts' },
-  { id: 'calculators', label: 'Calc', icon: '🧮', full: 'Calculators' },
-  { id: 'history', label: 'History', icon: '📝', full: 'Session History' },
+  { id: 'log', label: 'Log', icon: 'log', full: 'Log Session' },
+  { id: 'dashboard', label: 'Stats', icon: 'dashboard', full: 'Dashboard' },
+  { id: 'charts', label: 'Charts', icon: 'charts', full: 'Charts' },
+  { id: 'calculators', label: 'Calc', icon: 'calculator', full: 'Calculators' },
+  { id: 'history', label: 'History', icon: 'history', full: 'Session History' },
 ];

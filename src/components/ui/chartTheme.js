@@ -1,28 +1,29 @@
-// Shared dark-theme constants and a tooltip renderer for Recharts.
+// Shared light-theme constants and a tooltip renderer for Recharts.
 import { formatMoney } from '../../utils/formatting.js';
 
 export const CHART = {
-  grid: '#1f2a25',
-  axis: '#5b6b63',
-  green: '#34d399',
+  grid: '#e2e8f0', // slate-200
+  axis: '#64748b', // slate-500
+  green: '#059669', // emerald-600
   greenSoft: '#2d6a4f',
-  red: '#fb7185',
-  amber: '#fbbf24',
-  ev: '#7dd3fc',
-  paths: ['#34d399', '#7dd3fc', '#fbbf24', '#fb7185', '#a78bfa', '#f472b6', '#38bdf8', '#4ade80'],
+  red: '#e11d48', // rose-600
+  amber: '#d97706', // amber-600
+  ev: '#0284c7', // sky-600
+  paths: ['#059669', '#0284c7', '#d97706', '#e11d48', '#7c3aed', '#db2777', '#0891b2', '#16a34a'],
 };
 
 export function tooltipStyle() {
   return {
     contentStyle: {
-      background: '#0f1512',
-      border: '1px solid #2d6a4f66',
+      background: '#ffffff',
+      border: '1px solid #2d6a4f55',
       borderRadius: 10,
       fontSize: 12,
-      color: '#fff',
+      color: '#0f172a',
+      boxShadow: '0 8px 24px rgba(15,23,42,0.12)',
     },
-    labelStyle: { color: '#ffffffaa', marginBottom: 4 },
-    itemStyle: { color: '#fff' },
+    labelStyle: { color: '#475569', marginBottom: 4 },
+    itemStyle: { color: '#0f172a' },
   };
 }
 

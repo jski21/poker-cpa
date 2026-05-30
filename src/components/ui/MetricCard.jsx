@@ -1,28 +1,25 @@
 import Tooltip from './Tooltip.jsx';
 
-// A compact stat tile. `tone` controls the value color: 'pnl' colors by sign,
-// or pass an explicit tailwind class string.
+// A compact stat tile. `tone` controls the value color: pass an explicit tailwind
+// class via `valueClass`, or use the 'neutral'/'muted' presets.
 export default function MetricCard({ label, value, sub, tooltip, tone = 'neutral', valueClass = '', accent = false }) {
-  const toneClass =
-    tone === 'neutral'
-      ? 'text-white'
-      : tone === 'muted'
-        ? 'text-white/70'
-        : tone;
+  const toneClass = tone === 'muted' ? 'text-slate-600' : 'text-slate-900';
 
   return (
     <div
-      className={`rounded-xl border bg-ink-850/80 px-3 py-2.5 ${
-        accent ? 'border-felt-500/50 bg-felt-600/20' : 'border-white/10'
+      className={`rounded-2xl px-3.5 py-3 transition ${
+        accent
+          ? 'bg-felt-50 ring-1 ring-felt-200 shadow-card'
+          : 'bg-white ring-1 ring-slate-200/70 shadow-card'
       }`}
     >
-      <div className="mb-1 text-[11px] font-medium uppercase tracking-wide text-white/45">
+      <div className="mb-1.5 text-[10.5px] font-semibold uppercase tracking-[0.06em] text-slate-400">
         {tooltip ? <Tooltip text={tooltip}>{label}</Tooltip> : label}
       </div>
-      <div className={`font-mono text-lg font-semibold leading-tight tabular-nums ${valueClass || toneClass}`}>
+      <div className={`text-[1.35rem] font-semibold leading-none tracking-tight tabular-nums ${valueClass || toneClass}`}>
         {value}
       </div>
-      {sub != null && <div className="mt-0.5 text-[11px] text-white/45">{sub}</div>}
+      {sub != null && <div className="mt-1.5 text-[11px] text-slate-400">{sub}</div>}
     </div>
   );
 }

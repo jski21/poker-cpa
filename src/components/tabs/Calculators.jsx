@@ -15,14 +15,14 @@ import { recommendedBuyins, riskOfRuin, simulatePaths, simulateOutcomes } from '
 import { formatMoney, formatNumber, formatPercent } from '../../utils/formatting.js';
 
 const inputClass =
-  'w-full rounded-lg border border-white/10 bg-ink-900 px-3 py-2 text-sm text-white placeholder-white/30 outline-none focus:border-felt-400 focus:ring-1 focus:ring-felt-400';
+  'w-full rounded-lg border border-slate-200 bg-slate-100 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-felt-400 focus:ring-1 focus:ring-felt-400';
 
 function NumField({ label, value, onChange, step = 'any', suffix, hint }) {
   return (
     <label className="block">
       <div className="mb-1 flex items-center justify-between">
-        <span className="text-xs font-medium uppercase tracking-wide text-white/50">{label}</span>
-        {hint && <span className="text-[11px] text-white/35">{hint}</span>}
+        <span className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</span>
+        {hint && <span className="text-[11px] text-slate-400">{hint}</span>}
       </div>
       <div className="relative">
         <input
@@ -34,7 +34,7 @@ function NumField({ label, value, onChange, step = 'any', suffix, hint }) {
           className={inputClass}
         />
         {suffix && (
-          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-white/35">
+          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
             {suffix}
           </span>
         )}
@@ -45,8 +45,8 @@ function NumField({ label, value, onChange, step = 'any', suffix, hint }) {
 
 function Card({ title, icon, children }) {
   return (
-    <section className="rounded-2xl border border-white/10 bg-ink-850 p-4">
-      <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-white/85">
+    <section className="rounded-2xl bg-white ring-1 ring-slate-200/70 shadow-card p-4">
+      <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-800">
         <span>{icon}</span> {title}
       </h2>
       {children}
@@ -78,12 +78,12 @@ export default function Calculators({ stats, currency, settings }) {
       : null;
 
   const verdict = useMemo(() => {
-    if (!Number.isFinite(recDollars)) return { text: 'Win rate must be positive to ever be safely rolled.', tone: 'text-rose-400' };
+    if (!Number.isFinite(recDollars)) return { text: 'Win rate must be positive to ever be safely rolled.', tone: 'text-rose-600' };
     if (stats.currentBankroll >= recDollars)
-      return { text: `You're rolled. Current bankroll covers this with ${formatMoney(stats.currentBankroll - recDollars, c)} to spare.`, tone: 'text-emerald-400' };
+      return { text: `You're rolled. Current bankroll covers this with ${formatMoney(stats.currentBankroll - recDollars, c)} to spare.`, tone: 'text-emerald-600' };
     return {
       text: `Short by ${formatMoney(recDollars - stats.currentBankroll, c)}. Build up before moving in.`,
-      tone: 'text-amber-400',
+      tone: 'text-amber-600',
     };
   }, [recDollars, stats.currentBankroll, c]);
 
@@ -134,7 +134,7 @@ export default function Calculators({ stats, currency, settings }) {
             sub={monthlyProfit > 0 ? `${formatMoney(monthlyProfit, c)}/mo` : 'need a win rate'}
           />
         </div>
-        <div className={`mt-3 rounded-lg border border-white/10 bg-ink-900 px-3 py-2 text-sm ${verdict.tone}`}>
+        <div className={`mt-3 rounded-lg border border-slate-200 bg-slate-100 px-3 py-2 text-sm ${verdict.tone}`}>
           {verdict.text}
         </div>
       </Card>
@@ -144,7 +144,7 @@ export default function Calculators({ stats, currency, settings }) {
           <div className="w-28">
             <NumField label="Sessions" value={simN} onChange={setSimN} step="1" />
           </div>
-          <label className="flex cursor-pointer items-center gap-2 pb-2 text-sm text-white/70">
+          <label className="flex cursor-pointer items-center gap-2 pb-2 text-sm text-slate-600">
             <input
               type="checkbox"
               checked={useActual}
@@ -172,7 +172,7 @@ export default function Calculators({ stats, currency, settings }) {
         </div>
 
         {useActual && (
-          <div className="mb-3 text-xs text-white/45">
+          <div className="mb-3 text-xs text-slate-400">
             Using mean {formatMoney(meanV, c, { sign: true })}/session, SD {formatMoney(sdV, c)}/session.
           </div>
         )}
@@ -200,11 +200,11 @@ export default function Calculators({ stats, currency, settings }) {
 
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
           <MetricCard label="Median outcome" value={formatMoney(sim.outcomes.median, c, { sign: true })} accent />
-          <MetricCard label="Best (p100)" value={formatMoney(sim.outcomes.best, c, { sign: true })} valueClass="text-emerald-400" />
-          <MetricCard label="Worst (p0)" value={formatMoney(sim.outcomes.worst, c, { sign: true })} valueClass="text-rose-400" />
-          <MetricCard label="5th–95th pct" value={`${formatMoney(sim.outcomes.p05, c, { sign: true })} … ${formatMoney(sim.outcomes.p95, c, { sign: true })}`} valueClass="text-white/80 text-sm" />
-          <MetricCard label="Prob. Up" value={formatPercent(sim.outcomes.probUp)} valueClass="text-emerald-400" />
-          <MetricCard label="Exp. Max Drawdown" value={formatMoney(sim.outcomes.expectedMaxDrawdown, c)} valueClass="text-rose-400" />
+          <MetricCard label="Best (p100)" value={formatMoney(sim.outcomes.best, c, { sign: true })} valueClass="text-emerald-600" />
+          <MetricCard label="Worst (p0)" value={formatMoney(sim.outcomes.worst, c, { sign: true })} valueClass="text-rose-600" />
+          <MetricCard label="5th–95th pct" value={`${formatMoney(sim.outcomes.p05, c, { sign: true })} … ${formatMoney(sim.outcomes.p95, c, { sign: true })}`} valueClass="text-slate-700 text-sm" />
+          <MetricCard label="Prob. Up" value={formatPercent(sim.outcomes.probUp)} valueClass="text-emerald-600" />
+          <MetricCard label="Exp. Max Drawdown" value={formatMoney(sim.outcomes.expectedMaxDrawdown, c)} valueClass="text-rose-600" />
         </div>
       </Card>
     </div>
