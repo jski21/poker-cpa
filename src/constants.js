@@ -23,7 +23,20 @@ export const TAG_OPTIONS = [
 export const CURRENCIES = ['$', '€', '£'];
 
 // Known cash stakes -> big blind in dollars, used for big-blind auto-fill.
+// Microstakes (online) are labeled by their 100bb buy-in: NL2, NL5, NL10, etc.
 export const STAKES_PRESETS = {
+  // Microstakes (online)
+  '0.01/0.02': 0.02, // NL2
+  '0.02/0.05': 0.05, // NL5
+  '0.05/0.1': 0.1, // NL10
+  '0.05/0.10': 0.1, // NL10 (alt spelling)
+  '0.08/0.16': 0.16, // NL16
+  '0.1/0.2': 0.2, // NL20
+  '0.1/0.25': 0.25, // NL25
+  '0.10/0.25': 0.25, // NL25 (alt spelling)
+  '0.25/0.5': 0.5, // NL50
+  '0.25/0.50': 0.5, // NL50 (alt spelling)
+  // Low / mid stakes
   '0.5/1': 1,
   '1/1': 1,
   '1/2': 2,
@@ -38,7 +51,16 @@ export const STAKES_PRESETS = {
   '50/100': 100,
 };
 
-export const STAKES_QUICK_PICKS = ['1/2', '1/3', '2/5', '5/10', '10/25', '25/50'];
+export const STAKES_QUICK_PICKS = [
+  '0.01/0.02',
+  '0.02/0.05',
+  '0.05/0.10',
+  '0.10/0.25',
+  '0.25/0.50',
+  '1/2',
+  '2/5',
+  '5/10',
+];
 
 export const DEFAULT_SETTINGS = {
   currency: '$',
