@@ -30,14 +30,14 @@ const blankForm = () => ({
 
 function Segmented({ options, value, onChange }) {
   return (
-    <div className="flex gap-1 rounded-lg bg-ink-900 p-1">
+    <div className="flex gap-1 rounded-lg bg-slate-100 p-1">
       {options.map((opt) => (
         <button
           key={opt}
           type="button"
           onClick={() => onChange(opt)}
           className={`flex-1 rounded-md px-2 py-1.5 text-sm font-medium transition ${
-            value === opt ? 'bg-felt-500 text-white shadow' : 'text-white/55 hover:text-white'
+            value === opt ? 'bg-felt-500 text-white shadow' : 'text-slate-500 hover:text-slate-900'
           }`}
         >
           {opt}
@@ -51,8 +51,8 @@ function Field({ label, children, hint }) {
   return (
     <label className="block">
       <div className="mb-1 flex items-center justify-between">
-        <span className="text-xs font-medium uppercase tracking-wide text-white/50">{label}</span>
-        {hint && <span className="text-[11px] text-white/35">{hint}</span>}
+        <span className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</span>
+        {hint && <span className="text-[11px] text-slate-400">{hint}</span>}
       </div>
       {children}
     </label>
@@ -60,7 +60,7 @@ function Field({ label, children, hint }) {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-white/10 bg-ink-900 px-3 py-2 text-sm text-white placeholder-white/30 outline-none transition focus:border-felt-400 focus:ring-1 focus:ring-felt-400';
+  'w-full rounded-lg border border-slate-200 bg-slate-100 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-felt-400 focus:ring-1 focus:ring-felt-400';
 
 export default function LogSession({ onAdd, venues, currency, showToast }) {
   const [form, setForm] = useState(blankForm);
@@ -132,11 +132,11 @@ export default function LogSession({ onAdd, venues, currency, showToast }) {
       {/* Live P&L preview */}
       <div
         className={`rounded-2xl border px-4 py-4 text-center transition ${
-          hasResult ? 'border-white/10 bg-ink-850' : 'border-dashed border-white/10 bg-ink-850/40'
+          hasResult ? 'border-slate-200 bg-white' : 'border-dashed border-slate-200 bg-slate-50'
         }`}
       >
-        <div className="text-xs font-medium uppercase tracking-wide text-white/40">Session Result</div>
-        <div className={`font-mono text-4xl font-bold tabular-nums ${hasResult ? pnlColor(pnl) : 'text-white/25'}`}>
+        <div className="text-xs font-medium uppercase tracking-wide text-slate-400">Session Result</div>
+        <div className={`font-mono text-4xl font-bold tabular-nums ${hasResult ? pnlColor(pnl) : 'text-slate-300'}`}>
           {hasResult ? formatMoney(pnl, currency, { sign: true }) : `${currency}0.00`}
         </div>
         {hasResult && hours > 0 && (
@@ -188,7 +188,7 @@ export default function LogSession({ onAdd, venues, currency, showToast }) {
                 key={s}
                 type="button"
                 onClick={() => onStakesChange(s)}
-                className="rounded-md bg-ink-900 px-2 py-0.5 text-xs text-white/50 transition hover:bg-felt-600/40 hover:text-white"
+                className="rounded-md bg-slate-100 px-2 py-0.5 text-xs text-slate-500 transition hover:bg-felt-100 hover:text-slate-900"
               >
                 {s}
               </button>
@@ -267,7 +267,7 @@ export default function LogSession({ onAdd, venues, currency, showToast }) {
                 className={`rounded-full px-3 py-1 text-xs font-medium transition ${
                   active
                     ? 'bg-felt-500 text-white'
-                    : 'bg-ink-900 text-white/50 hover:bg-ink-850 hover:text-white/80'
+                    : 'bg-slate-100 text-slate-500 hover:bg-white hover:text-slate-700'
                 }`}
               >
                 {tag}
@@ -289,7 +289,7 @@ export default function LogSession({ onAdd, venues, currency, showToast }) {
 
       <button
         type="submit"
-        className="w-full rounded-xl bg-felt-500 px-4 py-3 text-base font-semibold text-white shadow-lg shadow-felt-600/30 transition hover:bg-felt-400 active:scale-[0.99]"
+        className="w-full rounded-xl bg-felt-500 px-4 py-3 text-base font-semibold text-white shadow-lg shadow-felt-500/30 transition hover:bg-felt-400 active:scale-[0.99]"
       >
         Log Session
       </button>

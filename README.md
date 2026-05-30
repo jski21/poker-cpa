@@ -17,7 +17,7 @@ your numbers follow you across devices. See [`SUPABASE_SETUP.md`](./SUPABASE_SET
   game / day-of-week heatmap.
 - **📈 Charts** — bankroll curve vs EV, session-result histogram, rolling
   hourly rate, monthly P&L, session-length-vs-profit scatter, and a Monte Carlo
-  variance simulation. All dark-themed (Recharts).
+  variance simulation. Clean light theme (Recharts).
 - **🧮 Calculators** — a bankroll calculator (required roll for a target Risk of
   Ruin, months to build) and a variance simulator (10 Monte Carlo paths,
   best/worst/median, probability of being up, expected max drawdown).

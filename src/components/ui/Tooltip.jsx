@@ -22,7 +22,7 @@ export default function Tooltip({ text, children, className = '' }) {
       onMouseLeave={() => setOpen(false)}
     >
       <span
-        className="cursor-help border-b border-dotted border-white/30"
+        className="cursor-help border-b border-dotted border-slate-300"
         onClick={(e) => {
           e.stopPropagation();
           setOpen((v) => !v);
@@ -33,10 +33,10 @@ export default function Tooltip({ text, children, className = '' }) {
       {open && text && (
         <span
           role="tooltip"
-          className="absolute bottom-full left-1/2 z-30 mb-2 w-56 -translate-x-1/2 rounded-lg border border-felt-500/40 bg-ink-850 px-3 py-2 text-xs font-normal normal-case leading-snug text-white/90 shadow-xl shadow-black/50"
+          className="absolute bottom-full left-1/2 z-30 mb-2 w-56 -translate-x-1/2 rounded-lg border border-felt-300 bg-white px-3 py-2 text-xs font-normal normal-case leading-snug text-slate-800 shadow-xl shadow-slate-400/30"
         >
           {text}
-          <span className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 -translate-y-1 rotate-45 border-b border-r border-felt-500/40 bg-ink-850" />
+          <span className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 -translate-y-1 rotate-45 border-b border-r border-felt-300 bg-white" />
         </span>
       )}
     </span>

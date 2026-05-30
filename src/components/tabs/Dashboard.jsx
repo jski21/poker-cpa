@@ -7,17 +7,17 @@ import { formatMoney, formatNumber, formatPercent, pnlColor } from '../../utils/
 
 function SectionTitle({ children, hint }) {
   return (
-    <h2 className="mb-2 mt-1 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-white/70">
+    <h2 className="mb-2 mt-1 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-600">
       {children}
-      {hint && <span className="text-[11px] font-normal normal-case text-white/35">{hint}</span>}
+      {hint && <span className="text-[11px] font-normal normal-case text-slate-400">{hint}</span>}
     </h2>
   );
 }
 
 function rorTone(ror) {
-  if (ror < 5) return { text: 'text-emerald-400', bg: 'border-emerald-500/40 bg-emerald-600/15', label: 'Healthy' };
-  if (ror <= 15) return { text: 'text-amber-400', bg: 'border-amber-500/40 bg-amber-600/15', label: 'Caution' };
-  return { text: 'text-rose-400', bg: 'border-rose-500/40 bg-rose-600/15', label: 'Danger' };
+  if (ror < 5) return { text: 'text-emerald-600', bg: 'border-emerald-300 bg-emerald-50', label: 'Healthy' };
+  if (ror <= 15) return { text: 'text-amber-600', bg: 'border-amber-300 bg-amber-50', label: 'Caution' };
+  return { text: 'text-rose-600', bg: 'border-rose-300 bg-rose-50', label: 'Danger' };
 }
 
 const BREAKDOWN_TABS = [
@@ -65,7 +65,7 @@ export default function Dashboard({ stats, currency, onSetBankroll }) {
               label="Current Bankroll"
               tooltip="Starting bankroll + net profit + deposits − withdrawals. Tap to set your starting figure."
               value={formatMoney(s.currentBankroll, c)}
-              valueClass={s.currentBankroll >= 0 ? 'text-white' : 'text-rose-400'}
+              valueClass={s.currentBankroll >= 0 ? 'text-slate-900' : 'text-rose-600'}
               sub="tap to edit start"
               accent
             />
@@ -106,7 +106,7 @@ export default function Dashboard({ stats, currency, onSetBankroll }) {
             label="BB / 100"
             tooltip="Big blinds won per 100 hands. The standard win-rate measure. Needs hands logged."
             value={s.bb100 == null ? '—' : formatNumber(s.bb100, 2)}
-            valueClass={s.bb100 == null ? 'text-white/40' : pnlColor(s.bb100, 0)}
+            valueClass={s.bb100 == null ? 'text-slate-400' : pnlColor(s.bb100, 0)}
             sub={s.bb100 == null ? 'log hands to enable' : null}
           />
           <MetricCard
@@ -125,31 +125,31 @@ export default function Dashboard({ stats, currency, onSetBankroll }) {
             label="Avg Win"
             tooltip="Mean profit across winning sessions."
             value={formatMoney(s.avgWin, c)}
-            valueClass="text-emerald-400"
+            valueClass="text-emerald-600"
           />
           <MetricCard
             label="Avg Loss"
             tooltip="Mean loss across losing sessions."
             value={formatMoney(s.avgLoss, c)}
-            valueClass="text-rose-400"
+            valueClass="text-rose-600"
           />
           <MetricCard
             label="Win/Loss Ratio"
             tooltip="Avg win ÷ avg loss. Above 1.0 means wins outsize losses."
             value={formatNumber(s.winLossRatio, 2)}
-            valueClass={s.winLossRatio >= 1 ? 'text-emerald-400' : 'text-amber-400'}
+            valueClass={s.winLossRatio >= 1 ? 'text-emerald-600' : 'text-amber-600'}
           />
           <MetricCard
             label="Biggest Win"
             tooltip="Largest single-session profit."
             value={formatMoney(s.biggestWin, c, { sign: true })}
-            valueClass="text-emerald-400"
+            valueClass="text-emerald-600"
           />
           <MetricCard
             label="Biggest Loss"
             tooltip="Largest single-session loss."
             value={formatMoney(s.biggestLoss, c, { sign: true })}
-            valueClass="text-rose-400"
+            valueClass="text-rose-600"
           />
         </div>
       </section>
@@ -159,7 +159,7 @@ export default function Dashboard({ stats, currency, onSetBankroll }) {
         <SectionTitle hint={`σ in ${s.sdUnit}`}>Variance &amp; Risk</SectionTitle>
 
         {s.ror > 10 && (
-          <div className="mb-2 rounded-xl border border-rose-500/40 bg-rose-600/15 px-4 py-3 text-sm text-rose-200">
+          <div className="mb-2 rounded-xl border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700">
             ⚠️ <span className="font-semibold">Under-rolled.</span> Your current bankroll may be too thin for these
             stakes (Risk of Ruin {formatPercent(s.ror)}). Consider dropping down or rebuilding.
           </div>
@@ -175,16 +175,16 @@ export default function Dashboard({ stats, currency, onSetBankroll }) {
             label="Hourly Range 68%"
             tooltip="Where ~2 of every 3 hours should land: hourly ± 1 standard deviation."
             value={range(s.range68[0], s.range68[1])}
-            valueClass="text-white/85 text-base"
+            valueClass="text-slate-800 text-base"
           />
           <MetricCard
             label="Hourly Range 95%"
             tooltip="Where ~19 of every 20 hours should land: hourly ± 2 standard deviations."
             value={range(s.range95[0], s.range95[1])}
-            valueClass="text-white/85 text-base"
+            valueClass="text-slate-800 text-base"
           />
           <div className={`rounded-xl border px-3 py-2.5 ${ror.bg}`}>
-            <div className="mb-1 text-[11px] font-medium uppercase tracking-wide text-white/45">
+            <div className="mb-1 text-[11px] font-medium uppercase tracking-wide text-slate-400">
               <Tooltip text="Probability of losing your whole bankroll at these stakes, given your win rate and variance.">
                 Risk of Ruin
               </Tooltip>
@@ -208,13 +208,13 @@ export default function Dashboard({ stats, currency, onSetBankroll }) {
             label="Roll in Buy-ins"
             tooltip="Current bankroll ÷ average buy-in. How many full buy-ins you're carrying."
             value={formatNumber(s.bankrollInBuyins, 1)}
-            valueClass={s.bankrollInBuyins >= 20 ? 'text-emerald-400' : s.bankrollInBuyins >= 10 ? 'text-amber-400' : 'text-rose-400'}
+            valueClass={s.bankrollInBuyins >= 20 ? 'text-emerald-600' : s.bankrollInBuyins >= 10 ? 'text-amber-600' : 'text-rose-600'}
           />
           <MetricCard
             label="Max Drawdown"
             tooltip="Largest peak-to-trough drop recorded across your session history."
             value={formatMoney(s.drawdown, c)}
-            valueClass="text-rose-400"
+            valueClass="text-rose-600"
           />
         </div>
       </section>
@@ -235,20 +235,20 @@ export default function Dashboard({ stats, currency, onSetBankroll }) {
       {/* E. Breakdown tables */}
       <section>
         <SectionTitle>Breakdowns</SectionTitle>
-        <div className="mb-3 flex flex-wrap gap-1 rounded-lg bg-ink-900 p-1">
+        <div className="mb-3 flex flex-wrap gap-1 rounded-lg bg-slate-100 p-1">
           {BREAKDOWN_TABS.map((t) => (
             <button
               key={t.id}
               onClick={() => setBreakdown(t.id)}
               className={`rounded-md px-3 py-1.5 text-xs font-medium transition ${
-                breakdown === t.id ? 'bg-felt-500 text-white' : 'text-white/55 hover:text-white'
+                breakdown === t.id ? 'bg-felt-500 text-white' : 'text-slate-500 hover:text-slate-900'
               }`}
             >
               {t.label}
             </button>
           ))}
         </div>
-        <div className="rounded-xl border border-white/10 bg-ink-850 p-3">{breakdownContent}</div>
+        <div className="rounded-xl border border-slate-200 bg-white p-3">{breakdownContent}</div>
       </section>
     </div>
   );
@@ -263,17 +263,17 @@ function DayOfWeek({ rows, currency }) {
         const intensity = Math.abs(r.profit) / maxAbs;
         const bg =
           r.sessions === 0
-            ? 'rgba(255,255,255,0.04)'
+            ? 'rgba(15,23,42,0.05)'
             : r.profit >= 0
               ? `rgba(16,185,129,${0.12 + intensity * 0.5})`
               : `rgba(244,63,94,${0.12 + intensity * 0.5})`;
         return (
-          <div key={r.key} className="rounded-lg border border-white/10 p-2 text-center" style={{ background: bg }}>
-            <div className="text-[11px] font-medium text-white/70">{r.key}</div>
+          <div key={r.key} className="rounded-lg border border-slate-200 p-2 text-center" style={{ background: bg }}>
+            <div className="text-[11px] font-medium text-slate-600">{r.key}</div>
             <div className={`font-mono text-xs font-semibold tabular-nums ${pnlColor(r.profit)}`}>
               {r.sessions ? formatMoney(r.profit, currency, { sign: true, decimals: 0 }) : '—'}
             </div>
-            <div className="text-[10px] text-white/40">{r.sessions} s</div>
+            <div className="text-[10px] text-slate-400">{r.sessions} s</div>
           </div>
         );
       })}

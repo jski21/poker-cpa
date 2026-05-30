@@ -32,15 +32,15 @@ export function formatHours(value) {
 
 // Tailwind text color for a P&L value. Near-breakeven (|x| <= threshold) is amber.
 export function pnlColor(value, threshold = 20) {
-  if (value > threshold) return 'text-emerald-400';
-  if (value < -threshold) return 'text-rose-400';
-  return 'text-amber-400';
+  if (value > threshold) return 'text-emerald-600';
+  if (value < -threshold) return 'text-rose-600';
+  return 'text-amber-600';
 }
 
 export function pnlBg(value, threshold = 20) {
-  if (value > threshold) return 'bg-emerald-500/10 border-emerald-500/30';
-  if (value < -threshold) return 'bg-rose-500/10 border-rose-500/30';
-  return 'bg-amber-500/10 border-amber-500/30';
+  if (value > threshold) return 'bg-emerald-50 border-emerald-200';
+  if (value < -threshold) return 'bg-rose-50 border-rose-200';
+  return 'bg-amber-50 border-amber-200';
 }
 
 export function formatDate(iso) {

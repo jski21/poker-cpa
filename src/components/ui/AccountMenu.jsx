@@ -29,7 +29,7 @@ export default function AccountMenu({ configured, user, onSignIn, onSignOut }) {
   if (!configured) {
     return (
       <span
-        className="rounded-lg border border-white/10 bg-ink-850 px-2.5 py-1.5 text-[11px] font-medium text-white/40"
+        className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-medium text-slate-400"
         title="Cloud sync isn't configured. Data is stored locally in this browser."
       >
         Local
@@ -41,7 +41,7 @@ export default function AccountMenu({ configured, user, onSignIn, onSignOut }) {
     return (
       <button
         onClick={onSignIn}
-        className="flex items-center gap-2 rounded-lg border border-white/10 bg-ink-850 px-3 py-1.5 text-sm font-medium text-white/80 transition hover:border-felt-500/40 hover:text-white"
+        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:border-felt-300 hover:text-slate-900"
       >
         <GoogleIcon /> Sign in
       </button>
@@ -56,7 +56,7 @@ export default function AccountMenu({ configured, user, onSignIn, onSignOut }) {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-lg border border-white/10 bg-ink-850 px-2 py-1.5 transition hover:border-felt-500/40"
+        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-2 py-1.5 transition hover:border-felt-300"
         title={email}
       >
         {avatar ? (
@@ -66,16 +66,16 @@ export default function AccountMenu({ configured, user, onSignIn, onSignOut }) {
             {initial}
           </span>
         )}
-        <span className="hidden max-w-[120px] truncate text-sm text-white/80 sm:inline">{email}</span>
-        <span className="text-white/40">▾</span>
+        <span className="hidden max-w-[120px] truncate text-sm text-slate-700 sm:inline">{email}</span>
+        <span className="text-slate-400">▾</span>
       </button>
       {open && (
-        <div className="absolute right-0 z-30 mt-1 w-56 overflow-hidden rounded-xl border border-white/10 bg-ink-850 shadow-2xl shadow-black/50">
-          <div className="border-b border-white/10 px-3 py-2.5">
-            <div className="text-[11px] uppercase tracking-wide text-white/40">Signed in</div>
-            <div className="truncate text-sm text-white/85">{email}</div>
-            <div className="mt-1 flex items-center gap-1 text-[11px] text-emerald-400">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Synced to cloud
+        <div className="absolute right-0 z-30 mt-1 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl shadow-slate-400/30">
+          <div className="border-b border-slate-200 px-3 py-2.5">
+            <div className="text-[11px] uppercase tracking-wide text-slate-400">Signed in</div>
+            <div className="truncate text-sm text-slate-800">{email}</div>
+            <div className="mt-1 flex items-center gap-1 text-[11px] text-emerald-600">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Synced to cloud
             </div>
           </div>
           <button
@@ -83,7 +83,7 @@ export default function AccountMenu({ configured, user, onSignIn, onSignOut }) {
               setOpen(false);
               onSignOut();
             }}
-            className="w-full px-3 py-2.5 text-left text-sm text-white/70 transition hover:bg-white/5 hover:text-white"
+            className="w-full px-3 py-2.5 text-left text-sm text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
           >
             Sign out
           </button>
