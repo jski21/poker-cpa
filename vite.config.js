@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
 
 // The app reads VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY. But the official
 // Supabase<->Vercel integration provisions env vars under different names
@@ -26,7 +27,43 @@ export default defineConfig(({ mode }) => {
     '';
 
   return {
-    plugins: [react()],
+    plugins: [
+      react(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['icon.svg', 'icons/apple-touch-icon.png', 'icons/favicon-32.png'],
+        manifest: {
+          name: 'Felt Ledger',
+          short_name: 'Felt Ledger',
+          description: 'Track your poker sessions, bankroll, win rate, and variance.',
+          theme_color: '#0b0f0d',
+          background_color: '#0b0f0d',
+          display: 'standalone',
+          orientation: 'portrait',
+          start_url: '/',
+          scope: '/',
+          categories: ['finance', 'sports', 'utilities'],
+          icons: [
+            { src: 'icons/pwa-192.png', sizes: '192x192', type: 'image/png' },
+            { src: 'icons/pwa-512.png', sizes: '512x512', type: 'image/png' },
+            {
+              src: 'icons/pwa-maskable-512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'maskable',
+            },
+          ],
+        },
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+          navigateFallback: '/index.html',
+          // OAuth callbacks (?code=...) and Supabase API must hit the network,
+          // not be served the cached shell.
+          navigateFallbackDenylist: [/^\/auth/, /\?code=/],
+          cleanupOutdatedCaches: true,
+        },
+      }),
+    ],
     define: {
       'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(supabaseUrl),
       'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(supabaseAnonKey),

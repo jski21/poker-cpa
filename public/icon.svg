@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Felt Ledger">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2d6a4f"/>
+      <stop offset="1" stop-color="#143728"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path fill="#ffffff" d="M256 96
+    C256 96 120 218 120 312
+    C120 360 156 388 196 388
+    C220 388 240 378 254 360
+    C250 392 236 420 212 440
+    L212 452 L300 452 L300 440
+    C276 420 262 392 258 360
+    C272 378 292 388 316 388
+    C356 388 392 360 392 312
+    C392 218 256 96 256 96 Z"/>
+</svg>
